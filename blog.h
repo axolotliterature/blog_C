@@ -45,7 +45,7 @@ void printTitle(char* postTitle);
 void printType(char* postType);
 void freeMemory();
 
-//======================== My Added Functions
+//======================== My Functions
 
 void menu();
 void getName();
