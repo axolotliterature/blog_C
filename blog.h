@@ -9,6 +9,19 @@ This program guides the user through dynamically adding blog posts in the form o
 
 */
 
+/*
+if (Author == NULL) { //malloc error check
+        printf("Failed to allocate: Author");
+        exit(-1);
+    }
+*/
+
+//is exit(num) used in proper context?
+
+//added proper malloc safety/error checks
+//clarified function descriptions
+//globalized postStart == null error messages
+
 #ifndef HEADER_FILE
 #define HEADER_FILE
 
@@ -45,7 +58,7 @@ void printTitle(char* postTitle);
 void printType(char* postType);
 void freeMemory();
 
-//======================== My Added Functions
+//======================== My Functions
 
 void menu();
 void getName();
