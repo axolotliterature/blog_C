@@ -1,6 +1,6 @@
 #include "blog.h"
 
-//main menu UI handles majority of this program; loops for user selection, each selection then returning to the menu until exit is selected
+//main menu UI handles majority of this program; loops for user selection, returning to the menu until exit is selected
 void menu() {
     int choice = 0;
     while (1) {
@@ -22,7 +22,7 @@ void menu() {
         else if (choice == 3) { //Print Posts -- SUBMENU
             if (postStart == NULL) { //check that start isn't null
                 printf("!=========================!\n");
-                printf("No Blog posts to print.\nStart by adding a post.\n");
+                printf("There are no blog post entries...\nPlease begin by adding a blog post.\n");
                 printf("!=========================!\n");
                 while (getchar() != '\n'); //clear buffer
             } else if (postStart != NULL) { //If blog start exists, continue
@@ -55,7 +55,7 @@ void menu() {
         } 
         else if (choice == 4) { //Remove Post
             int result;
-            char* postToDel = (char*)malloc(sizeof(char)*BUFFER);
+            char postToDel[BUFFER];
             printf("Please enter the title of the post you would like to remove...\n");
             scanf(" %s", postToDel);
             result = removePost(postToDel);
@@ -89,8 +89,7 @@ void menu() {
 void addPost() {
     if (postStart == NULL) { //if postStart is NULL, creates first item
         postStart = (Blog*)malloc(sizeof(Blog));
-        //malloc error check
-        if (postStart == NULL) {
+        if (postStart == NULL) { //malloc error check
             printf("Failed to create start of Blog list, quitting...\n");
             exit(-1);
         }
@@ -113,8 +112,7 @@ void addPost() {
 
         //create new blog
         currentPos->next = (Blog*)malloc(sizeof(Blog));
-        //malloc error check
-        if (currentPos == NULL) {
+        if (currentPos == NULL) { //malloc error check
             printf("Failed to create new blog end of list, quitting...\n");
             exit(-2);
         }
@@ -313,16 +311,20 @@ void freeMemory() {
     free(postStart);
 }
 
-//malloc for Author, prompts user to input name, stores as Author
+//allocates for Author global variable, prompts user to input name, stores as Author global variable 
 void getName() {
     Author = (char*)malloc(sizeof(char)*BUFFER);
+    if (Author == NULL) { //malloc error check
+        printf("Failed to allocate: Author");
+        exit(-1);
+    }
     printf("Please enter your name: ");
     scanf(" %[^\n]", Author); 
     while (getchar() != '\n'); // clear buffer
 }
 
 //prompts user for date input in format mm/dd/yyyy, changes ints to strings to concatenate without backslash, converts back to int, return int as mmddyyyy
-//calls malloc on temporary variable, returns address of that variable
+//allocates for string variable, returns address of string
 int getDate() {
     int mm, dd, yyyy, date;
     char s1[3], s2[3], s3[5], s4[9];
@@ -351,18 +353,21 @@ int getDate() {
     return date;
 }
 
-//prompts user for title of blog, returns string
-//calls malloc on temporary variable, returns address of that variable
+//prompts user for title of blog, allocates for string variable, returns address of string
 char* getTitle() {
     char* titlename = (char*)malloc(sizeof(char)*BUFFER);
+    if (titlename == NULL) { //malloc error check
+        printf("Failed to allocate: Title");
+        exit(-1);
+    }
     printf("Title of post: ");
     scanf(" %s", titlename);
     while (getchar() != '\n'); // clear buffer
     return titlename;
 }
 
-//prompts the user for blog type by int list, returns exact string needed, reduces user error
-//calls malloc on temporary variable, returns address of that variable
+//prompts the user for blog type via list of selections (input = int), allocates for string variable, returns address of string
+//returns exact string needed, reduces user error
 char* getType() {
     int selection;
 
@@ -394,17 +399,14 @@ char* getType() {
    
 }
 
-//prompts user for blog entry, returns whole string entry until newline
-//calls malloc on temporary variable, returns address of that variable
+//prompts user for blog entry (size of ENTRYBUFFER), allocates for string variable, 
+// returns address of string - scanf whole string entry until newline
 char* getEntry() {
-    // char* entryTemp = (char*)malloc(sizeof(char)*ENTRYBUFFER);
-    //     printf("Entry: ");
-    //     scanf(" %s", entryTemp);
-    //     strcpy(currentPos->Entry, entryTemp);
-    //     free(entryTemp);
-    //     while (getchar() != '\n'); //clear buffer
-    
     char* entry = (char*)malloc(sizeof(char)*ENTRYBUFFER);
+    if (entry == NULL) { //malloc error check
+        printf("Failed to allocate: Entry");
+        exit(-1);
+    }
     printf("Entry: ");
     scanf(" %[^\n]", entry);
     while (getchar() != '\n'); //clear buffer

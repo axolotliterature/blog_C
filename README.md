@@ -24,3 +24,5 @@ free(current);
 
 1/5 malloc/calloc Safety:
 Very few to no checks if the calls failed.
+
+getDate can be improved greatly
