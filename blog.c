@@ -173,30 +173,45 @@ void entryCount() {
 }
 
 //iterates through Blog list, compares Blog->Title to postTitle
-//if match found: frees matching blog and returns 0 | if no match found: returns 1 | if iteration loop fails: returns 2
+//if match found: frees matching blog and returns 0 
+//if no match found: returns 1 
+//if neither is true for some stupid reason??: returns 2
 int removePost(char* postTitle) {
     Blog* currentPos = postStart;
     Blog* prevPos = currentPos;
+    int delCount = 0;
 
-    if (strcmp(postStart->Title, postTitle) == 0) { //check first node, if match, rotates postStart to next node and frees previous postStart
-        Blog* temp = postStart;
-        postStart = postStart->next;
-        free(temp);
-        return 0;
-    }
-
-    while (currentPos->next != NULL) {
-        prevPos = currentPos;
-        currentPos = currentPos->next;
+    while (currentPos != NULL) {
+        //check first node->Title, if match to postTitle, rotates postStart to be the next node and frees the former postStart node
+        if (strcmp(postStart->Title, postTitle) == 0) {
+            Blog* temp = postStart;
+            postStart = postStart->next;
+            free(temp->Title);
+            free(temp->Type);
+            free(temp->Entry);
+            free(temp);
+            delCount++;
+        }
+        //checks current position->title, if match - point previous->next to current->next and free current position
         if (strcmp(currentPos->Title, postTitle) == 0) {
             prevPos->next = currentPos->next;
+            free(currentPos->Title);
+            free(currentPos->Type);
+            free(currentPos->Entry);
             free(currentPos);
-            return 0;
-        } else if (strcmp(currentPos->Title, postTitle) != 0) {
-            return 1;
+            delCount++;
         }
+        //continue iterating through list
+        prevPos = currentPos;
+        currentPos = currentPos->next;
+    }
+    if (delCount > 0) {
+        return 0;
+    } else if (delCount == 0) {
+        return 1;
     }
     return 2;
+    
 }
 
 //iterates through blog* list and prints each entry
@@ -305,6 +320,9 @@ void freeMemory() {
     while (currentPos != NULL) {
         prevPos = currentPos;
         currentPos = currentPos->next;
+        free(prevPos->Title);
+        free(prevPos->Type);
+        free(prevPos->Entry);
         free(prevPos);
         }
     free(Author);

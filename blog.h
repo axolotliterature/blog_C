@@ -10,17 +10,31 @@ This program guides the user through dynamically adding blog posts in the form o
 */
 
 /*
-if (Author == NULL) { //malloc error check
-        printf("Failed to allocate: Author");
-        exit(-1);
-    }
+Repair log:
+
+5/15/2022
+added proper malloc safety/error checks
+clarified function descriptions
+globalized postStart == null error messages
+
+5/17/2022
+fixed memory leak at freeMemory function: function now set to free the strings within the struct before freeing the struct itself
+fixed memory leak at removePost of same nature of above
+streamlined removePost function, changed argument variable postToDel into char array[] of size BUFFER rather than char* allocated with malloc so that the variable in memory is not a leak liability (I think?) No reason to malloc just for a temp variable if it's passing the contents anyway, and not actually utilizing the pointer.
+
+New errors-
+On exit: free() pointer error
+dual free calls I think?
+
+on remove post: segmentation fault
+
+
 */
 
 //is exit(num) used in proper context?
 
-//added proper malloc safety/error checks
-//clarified function descriptions
-//globalized postStart == null error messages
+
+
 
 #ifndef HEADER_FILE
 #define HEADER_FILE

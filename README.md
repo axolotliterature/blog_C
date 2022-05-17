@@ -5,11 +5,13 @@ TO DO
 
 6/8 removePost:
 -1 Does not free the internal strings of the struct
--1 Logic for the check is wrong, will only check the first node as the next else if is:
+-1 (DONE) Logic for the check is wrong, will only check the first node as the next else if is:
 else if (strcmp(currentPos->Title, postTitle) != 0) {
             return 1;
         }
 So if the first doesn't match, then it quits out as a failure.
+
+--change loop entirely, make the loop run through the entirety of the array of structs comparing to each, then exit where the return2 currently is at
 
 3/5 Free Memory:
 -2 Does not free internal string memory of structs
