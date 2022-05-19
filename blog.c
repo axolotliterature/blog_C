@@ -181,17 +181,22 @@ int removePost(char* postTitle) {
     Blog* prevPos = currentPos;
     int delCount = 0;
 
+    //check first node->Title, if match to postTitle, rotates postStart to be the next node and frees the former postStart node
+    if (strcmp(postStart->Title, postTitle) == 0) {
+        Blog* temp = postStart;
+        postStart = postStart->next;
+        free(temp->Title);
+        free(temp->Type);
+        free(temp->Entry);
+        free(temp);
+        delCount++;
+    }
+
+
+
     while (currentPos != NULL) {
-        //check first node->Title, if match to postTitle, rotates postStart to be the next node and frees the former postStart node
-        if (strcmp(postStart->Title, postTitle) == 0) {
-            Blog* temp = postStart;
-            postStart = postStart->next;
-            free(temp->Title);
-            free(temp->Type);
-            free(temp->Entry);
-            free(temp);
-            delCount++;
-        }
+
+
         //checks current position->title, if match - point previous->next to current->next and free current position
         if (strcmp(currentPos->Title, postTitle) == 0) {
             prevPos->next = currentPos->next;
@@ -325,8 +330,13 @@ void freeMemory() {
         free(prevPos->Entry);
         free(prevPos);
         }
-    free(Author);
-    free(postStart);
+    if (Author != NULL) {
+        free(Author);
+    }
+    if (postStart != NULL) {
+        free(postStart);
+    }
+
 }
 
 //allocates for Author global variable, prompts user to input name, stores as Author global variable 

@@ -27,6 +27,14 @@ On exit: free() pointer error
 dual free calls I think?
 
 on remove post: segmentation fault
+on remove post 3rd entry: munmap_chunk(): invalid pointer
+
+-free() has to see the exact thing malloc created.
+-check that the strings are assigned via strcpy and not "string = 'string'"
+-perhaps rewrite allocation to first malloc on currentPos->string, use a temp variable to scanf, then strcpy contents over to the malloc'd variable. this should retain the original pointer from the malloc and relieve the munmap error
+
+on exit, 1 entry: segmentation fault
+on exit, 2 entries: seg fault
 
 
 */
