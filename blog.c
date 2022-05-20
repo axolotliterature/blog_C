@@ -36,9 +36,13 @@ void menu() {
                         printDate(getDate());
                         break;
                     } else if (selection == 2) { //print by title
-                        printTitle(getTitle());
+                        char titlename[BUFFER];
+                        printf("Title of post: ");
+                        scanf(" %s", titlename);
+                        printTitle(titlename);
                         break;
                     } else if (selection == 3) { //print by type
+                        
                         printType(getType());
                         break;
                     } else if (selection == 4) { //print all
@@ -99,8 +103,17 @@ void addPost() {
             while (postStart->Date == -1) {
                 postStart->Date = getDate();
             }
-        postStart->Title = getTitle(); // get title of blog
-        postStart->Type = getType(); //get type of blog
+        // postStart->Title = getTitle(); // get title of blog
+
+        postStart->Title = (char*)malloc(sizeof(char)*BUFFER);
+        getTitle();
+
+        // postStart->Type = getType(); //get type of blog
+
+        postStart->Type = (char*)malloc(sizeof(char)*BUFFER);
+        char typetemp[BUFFER] = getType();
+        strcpy(postStart->Type, typetemp);
+
         postStart->Entry = getEntry(); //Get blog Entry
         postStart->next = NULL; //Set next pointer to null
     } else { //start at beginning of blog list, iterate through to the end (NULL)
@@ -123,8 +136,15 @@ void addPost() {
             while (currentPos->Date == -1) {
                 currentPos->Date = getDate();
             }
-        currentPos->Title = getTitle();
-        currentPos->Type = getType();
+        // currentPos->Title = getTitle();
+        currentPos->Title = (char*)malloc(sizeof(char)*BUFFER);
+        getTitle();
+
+        // currentPos->Type = getType();
+        currentPos->Type = (char*)malloc(sizeof(char)*BUFFER);
+        char typetemp[BUFFER] = getType();
+        strcpy(currentPos->Type, typetemp);
+        
         currentPos->Entry = getEntry();
         currentPos->next = NULL;
     }
@@ -186,8 +206,8 @@ int removePost(char* postTitle) {
         Blog* temp = postStart;
         postStart = postStart->next;
         free(temp->Title);
-        free(temp->Type);
-        free(temp->Entry);
+        // free(temp->Type);
+        // free(temp->Entry);
         free(temp);
         delCount++;
     }
@@ -201,8 +221,8 @@ int removePost(char* postTitle) {
         if (strcmp(currentPos->Title, postTitle) == 0) {
             prevPos->next = currentPos->next;
             free(currentPos->Title);
-            free(currentPos->Type);
-            free(currentPos->Entry);
+            // free(currentPos->Type);
+            // free(currentPos->Entry);
             free(currentPos);
             delCount++;
         }
@@ -382,16 +402,25 @@ int getDate() {
 }
 
 //prompts user for title of blog, allocates for string variable, returns address of string
-char* getTitle() {
-    char* titlename = (char*)malloc(sizeof(char)*BUFFER);
-    if (titlename == NULL) { //malloc error check
-        printf("Failed to allocate: Title");
-        exit(-1);
+void getTitle() {
+    // char* titlename = (char*)malloc(sizeof(char)*BUFFER);
+    // if (titlename == NULL) { //malloc error check
+    //     printf("Failed to allocate: Title");
+    //     exit(-1);
+    // }
+    // printf("Title of post: ");
+    // scanf(" %s", titlename);
+    // while (getchar() != '\n'); // clear buffer
+    // return titlename;
+
+    char titlename[BUFFER];
+    Blog* currentPos = postStart;
+    while (currentPos->next != NULL) {
+        currentPos = currentPos->next;
     }
     printf("Title of post: ");
     scanf(" %s", titlename);
-    while (getchar() != '\n'); // clear buffer
-    return titlename;
+    strcpy(currentPos->Title, titlename);
 }
 
 //prompts the user for blog type via list of selections (input = int), allocates for string variable, returns address of string

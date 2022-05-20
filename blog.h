@@ -36,6 +36,16 @@ on remove post 3rd entry: munmap_chunk(): invalid pointer
 on exit, 1 entry: segmentation fault
 on exit, 2 entries: seg fault
 
+5/20
+
+changed getTitle to first malloc currentPos->Title at Blog creation, then scanf to temp variable for user input and strcpy over to currentPos->Title. This fixes the munmap pointer error.
+
+
+(NEED TO) executed similar fixes to getType and getEntry functions, and reset free() calls.
+For getType, since function already returns a string, return into another temp var, then strcpy over into currentPos->Type.
+
+actually, in getType, set up iteration loop before selection choice, replace returns with strcpy into currentPos
+
 
 */
 
@@ -85,7 +95,7 @@ void freeMemory();
 void menu();
 void getName();
 int getDate();
-char* getTitle();
+void getTitle();
 char* getType();
 char* getEntry();
 
