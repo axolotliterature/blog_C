@@ -41,9 +41,8 @@ void menu() {
                         scanf(" %s", titlename);
                         printTitle(titlename);
                         break;
-                    } else if (selection == 3) { //print by type
-                        
-                        printType(getType());
+                    } else if (selection == 3) { //print by type                      
+                        printType(getPrintType());
                         break;
                     } else if (selection == 4) { //print all
                         printAll();
@@ -103,16 +102,10 @@ void addPost() {
             while (postStart->Date == -1) {
                 postStart->Date = getDate();
             }
-        // postStart->Title = getTitle(); // get title of blog
-
         postStart->Title = (char*)malloc(sizeof(char)*BUFFER);
         getTitle();
-
-        // postStart->Type = getType(); //get type of blog
-
         postStart->Type = (char*)malloc(sizeof(char)*BUFFER);
-        char typetemp[BUFFER] = getType();
-        strcpy(postStart->Type, typetemp);
+        getType();
 
         postStart->Entry = getEntry(); //Get blog Entry
         postStart->next = NULL; //Set next pointer to null
@@ -136,14 +129,10 @@ void addPost() {
             while (currentPos->Date == -1) {
                 currentPos->Date = getDate();
             }
-        // currentPos->Title = getTitle();
         currentPos->Title = (char*)malloc(sizeof(char)*BUFFER);
         getTitle();
-
-        // currentPos->Type = getType();
         currentPos->Type = (char*)malloc(sizeof(char)*BUFFER);
-        char typetemp[BUFFER] = getType();
-        strcpy(currentPos->Type, typetemp);
+        getType();
         
         currentPos->Entry = getEntry();
         currentPos->next = NULL;
@@ -401,18 +390,9 @@ int getDate() {
     return date;
 }
 
-//prompts user for title of blog, allocates for string variable, returns address of string
+//prompts user for title of blog, iterates through Blog list to most recent Blog, scanf user input to temp string, strcpy temp string into currentPos->Title
+//allocate memory for Title before calling getTitle()
 void getTitle() {
-    // char* titlename = (char*)malloc(sizeof(char)*BUFFER);
-    // if (titlename == NULL) { //malloc error check
-    //     printf("Failed to allocate: Title");
-    //     exit(-1);
-    // }
-    // printf("Title of post: ");
-    // scanf(" %s", titlename);
-    // while (getchar() != '\n'); // clear buffer
-    // return titlename;
-
     char titlename[BUFFER];
     Blog* currentPos = postStart;
     while (currentPos->next != NULL) {
@@ -423,9 +403,47 @@ void getTitle() {
     strcpy(currentPos->Title, titlename);
 }
 
-//prompts the user for blog type via list of selections (input = int), allocates for string variable, returns address of string
-//returns exact string needed, reduces user error
-char* getType() {
+//prompts the user for blog type via list of selections (input = int), iterates through Blog list to most recent Blog, strcpy exact string needed into currentPos->Type, reduces user error
+//allocate memory for Type before calling getType
+void getType() {
+    int selection;
+    Blog* currentPos = postStart;
+
+    while (currentPos->next != NULL) { //iterate through to most recent Blog position
+        currentPos = currentPos->next;
+    }
+
+    printf("\n\n-=-=-=-=-=-=-=-=-=-=-=\n\n");
+    printf("Type of entry:\n1. Diary\n2. Hobby\n3. Journalism\n4. Art\n");
+    printf("\n-=-=-=-=-=-=-=-=-=-=-=\n\n");
+
+    scanf(" %d", &selection);
+
+    while (1) {
+        if (selection == 1) { //Type = Diary
+            while (getchar() != '\n'); //clear buffer before return
+            strcpy(currentPos->Type, "Diary");
+        } else if (selection == 2) { //Type = Hobby
+            while (getchar() != '\n'); //clear buffer before return
+            strcpy(currentPos->Type, "Hobby");
+        } else if (selection == 3) { //Type = Journalism
+            while (getchar() != '\n'); //clear buffer before return
+            strcpy(currentPos->Type, "Journalism");
+        } else if (selection == 4) { //Type = Art
+            while (getchar() != '\n'); //clear buffer before return
+            strcpy(currentPos->Type, "Art");
+        } else { //Wrong input, reprompt user input and repeat loop
+            printf("Invalid input of ( %d ), please enter a valid number\n", selection);
+            while (getchar() != '\n'); // clear buffer
+            scanf(" %d", &selection);
+        }
+    }
+   
+}
+
+//prompts the user for blog type via list of selections (input = int), returns exact string needed, reduces user error
+//similar function to getType(), except this function returns the string, rather than strcpy the string into the Blog
+char* getPrintType() {
     int selection;
 
     printf("\n\n-=-=-=-=-=-=-=-=-=-=-=\n\n");
@@ -435,25 +453,26 @@ char* getType() {
     scanf(" %d", &selection);
 
     while (1) {
-        if (selection == 1) {
+        if (selection == 1) { //Type = Diary
             while (getchar() != '\n'); //clear buffer before return
             return "Diary";
-        } else if (selection == 2) {
+        } else if (selection == 2) { //Type = Hobby
             while (getchar() != '\n'); //clear buffer before return
             return "Hobby";
-        } else if (selection == 3) {
+        } else if (selection == 3) { //Type = Journalism
             while (getchar() != '\n'); //clear buffer before return
             return "Journalism";
-        } else if (selection == 4) {
+        } else if (selection == 4) { //Type = Art
             while (getchar() != '\n'); //clear buffer before return
             return "Art";
-        } else {
+        } else { //Wrong input, reprompt user input and repeat loop
             printf("Invalid input of ( %d ), please enter a valid number\n", selection);
             while (getchar() != '\n'); // clear buffer
             scanf(" %d", &selection);
         }
     }
    
+    
 }
 
 //prompts user for blog entry (size of ENTRYBUFFER), allocates for string variable, 
