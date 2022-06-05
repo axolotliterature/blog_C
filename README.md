@@ -1,30 +1,5 @@
 # blog_C
 Basic blogging system made for an Intro to C course
 
-TO DO
-
-6/8 removePost:
--1 Does not free the internal strings of the struct
--1 (DONE) Logic for the check is wrong, will only check the first node as the next else if is:
-else if (strcmp(currentPos->Title, postTitle) != 0) {
-            return 1;
-        }
-So if the first doesn't match, then it quits out as a failure.
-
---change loop entirely, make the loop run through the entirety of the array of structs comparing to each, then exit where the return2 currently is at
-
-3/5 Free Memory:
--2 Does not free internal string memory of structs
-
-before freeing the struct, clear out the internal strings.
-Otherwise they will float off into the ether, still occupying memory but inaccessible.
-
-free(current->Title);
-free(current->Type);
-free(current->Entry);
-free(current);
-
-1/5 malloc/calloc Safety:
-Very few to no checks if the calls failed.
-
-getDate can be improved greatly
+Written entirely in C, this program allows users to create, count, search, print, and delete blog entries over a simple text-based UI.
+The purpose of this program is to demonstrate an understanding of dynamic memory allocation in combination with creation, traversal, and removal of structs within linked lists without memory leaks or data loss. Writing this program has been a learning experience not only for an introduction into advanced data structures but also into debugging more difficult logic errors, such as munmap pointer errors and addressing memory leaks.
