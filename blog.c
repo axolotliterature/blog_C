@@ -103,11 +103,26 @@ void addPost() {
                 postStart->Date = getDate();
             }
         postStart->Title = (char*)malloc(sizeof(char)*BUFFER);
+        if (postStart->Title == NULL) {
+            printf("Failed to allocate memory for Title, exiting...");
+            exit(-1);
+        }
         getTitle();
         postStart->Type = (char*)malloc(sizeof(char)*BUFFER);
+        if (postStart->Type == NULL) {
+            printf("Failed to allocate memory for Type, exiting...");
+            exit(-1);
+        }
         getType();
+        postStart->Entry = (char*)malloc(sizeof(char)*ENTRYBUFFER);
+        if (postStart->Entry == NULL) {
+            printf("Failed to allocate memory for entry, exiting...");
+            exit(-1);
+        }
+        getEntry();
 
-        postStart->Entry = getEntry(); //Get blog Entry
+
+        // postStart->Entry = getEntry(); //Get blog Entry
         postStart->next = NULL; //Set next pointer to null
     } else { //start at beginning of blog list, iterate through to the end (NULL)
 
@@ -133,8 +148,10 @@ void addPost() {
         getTitle();
         currentPos->Type = (char*)malloc(sizeof(char)*BUFFER);
         getType();
+        currentPos->Entry = (char*)malloc(sizeof(char)*ENTRYBUFFER);
+        getEntry();
         
-        currentPos->Entry = getEntry();
+        // currentPos->Entry = getEntry();
         currentPos->next = NULL;
     }
 }
@@ -338,12 +355,22 @@ void freeMemory() {
         free(prevPos->Type);
         free(prevPos->Entry);
         free(prevPos);
-        }
+    }
+
+    if (currentPos != NULL) {
+        printf("Current Position has not been cleared\n");
+    }
+    // free(currentPos->Title);
+    // free(currentPos->Type);
+    // free(currentPos->Entry);
+    // free(currentPos);
+
     if (Author != NULL) {
         free(Author);
     }
     if (postStart != NULL) {
-        free(postStart);
+        printf("postStart has not been cleared\n");
+        // free(postStart);
     }
 
 }
@@ -401,6 +428,7 @@ void getTitle() {
     printf("Title of post: ");
     scanf(" %s", titlename);
     strcpy(currentPos->Title, titlename);
+    while (getchar() != '\n'); //clear buffer before return
 }
 
 //prompts the user for blog type via list of selections (input = int), iterates through Blog list to most recent Blog, strcpy exact string needed into currentPos->Type, reduces user error
@@ -421,24 +449,27 @@ void getType() {
 
     while (1) {
         if (selection == 1) { //Type = Diary
-            while (getchar() != '\n'); //clear buffer before return
             strcpy(currentPos->Type, "Diary");
+            while (getchar() != '\n'); //clear buffer before return
+            break;
         } else if (selection == 2) { //Type = Hobby
-            while (getchar() != '\n'); //clear buffer before return
             strcpy(currentPos->Type, "Hobby");
+            while (getchar() != '\n'); //clear buffer before return
+            break;
         } else if (selection == 3) { //Type = Journalism
-            while (getchar() != '\n'); //clear buffer before return
             strcpy(currentPos->Type, "Journalism");
-        } else if (selection == 4) { //Type = Art
             while (getchar() != '\n'); //clear buffer before return
+            break;
+        } else if (selection == 4) { //Type = Art
             strcpy(currentPos->Type, "Art");
+            while (getchar() != '\n'); //clear buffer before return
+            break;
         } else { //Wrong input, reprompt user input and repeat loop
-            printf("Invalid input of ( %d ), please enter a valid number\n", selection);
+            printf("Invalid input of (%d), please enter a valid number\n", selection);
             while (getchar() != '\n'); // clear buffer
             scanf(" %d", &selection);
         }
     }
-   
 }
 
 //prompts the user for blog type via list of selections (input = int), returns exact string needed, reduces user error
@@ -477,14 +508,27 @@ char* getPrintType() {
 
 //prompts user for blog entry (size of ENTRYBUFFER), allocates for string variable, 
 // returns address of string - scanf whole string entry until newline
-char* getEntry() {
-    char* entry = (char*)malloc(sizeof(char)*ENTRYBUFFER);
-    if (entry == NULL) { //malloc error check
-        printf("Failed to allocate: Entry");
-        exit(-1);
+void getEntry() {
+    char entryTemp[ENTRYBUFFER];
+    Blog* currentPos = postStart;
+    while (currentPos->next != NULL) {
+        currentPos = currentPos->next;
     }
     printf("Entry: ");
-    scanf(" %[^\n]", entry);
+    scanf(" %s", entryTemp);
+    strcpy(currentPos->Title, entryTemp);
     while (getchar() != '\n'); //clear buffer
-    return entry;
+
+
+
+
+    // char* entry = (char*)malloc(sizeof(char)*ENTRYBUFFER);
+    // if (entry == NULL) { //malloc error check
+    //     printf("Failed to allocate: Entry");
+    //     exit(-1);
+    // }
+    // printf("Entry: ");
+    // scanf(" %[^\n]", entry);
+    // while (getchar() != '\n'); //clear buffer
+    // return entry;
 }

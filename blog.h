@@ -44,6 +44,10 @@ changed getTitle to first malloc currentPos->Title at Blog creation, then scanf 
 (NEED TO) executed similar fixes to getType and getEntry functions, and reset free() calls.
 For getType, since function already returns a string, return into another temp var, then strcpy over into currentPos->Type.
 
+NEED TO: add new malloc checks
+
+NEED TO: check addpost getDate -1?
+
 actually, in getType, set up iteration loop before selection choice, replace returns with strcpy into currentPos
 
 
@@ -52,6 +56,13 @@ actually, in getType, set up iteration loop before selection choice, replace ret
 made changes to getType() to strcpy into currentPos->Type rather than return a string, this alleviates the munmap error like before with Title.
 created getPrintType() function that still utilizes old getType() method so that printType() still works in its current form.
 
+5/31
+
+made changes to getEntry() to reflect those previous for getType() and etc. 
+
+new error, title only strcpy until first space, entry doesnt strcpy anything
+
+poststart has not been cleared
 */
 
 //is exit(num) used in proper context?
@@ -91,7 +102,7 @@ void entryCount();
 int removePost(char* postTitle);
 void printAll();
 void printDate(int postDate);
-void printTitle(char* postTitle);
+void printTitle(char* postTitle); // remove arguments from these fnctns, some are no longer used
 void printType(char* postType);
 void freeMemory();
 
@@ -102,7 +113,7 @@ void getName();
 int getDate();
 void getTitle();
 void getType();
-char* getEntry();
+void getEntry();
 char* getPrintType();
 
 
