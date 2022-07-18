@@ -357,20 +357,18 @@ void freeMemory() {
         free(prevPos);
     }
 
+    // free(postStart);
+
     if (currentPos != NULL) {
         printf("Current Position has not been cleared\n");
     }
-    // free(currentPos->Title);
-    // free(currentPos->Type);
-    // free(currentPos->Entry);
-    // free(currentPos);
 
     if (Author != NULL) {
         free(Author);
     }
     if (postStart != NULL) {
-        printf("postStart has not been cleared\n");
-        // free(postStart);
+        // printf("postStart has not been cleared\n");
+        free(postStart);
     }
 
 }
@@ -426,7 +424,7 @@ void getTitle() {
         currentPos = currentPos->next;
     }
     printf("Title of post: ");
-    scanf(" %s", titlename);
+    scanf(" %[^\n]s", titlename);
     strcpy(currentPos->Title, titlename);
     while (getchar() != '\n'); //clear buffer before return
 }
@@ -515,20 +513,7 @@ void getEntry() {
         currentPos = currentPos->next;
     }
     printf("Entry: ");
-    scanf(" %s", entryTemp);
-    strcpy(currentPos->Title, entryTemp);
+    scanf(" %[^\n]s", entryTemp);
+    strcpy(currentPos->Entry, entryTemp);
     while (getchar() != '\n'); //clear buffer
-
-
-
-
-    // char* entry = (char*)malloc(sizeof(char)*ENTRYBUFFER);
-    // if (entry == NULL) { //malloc error check
-    //     printf("Failed to allocate: Entry");
-    //     exit(-1);
-    // }
-    // printf("Entry: ");
-    // scanf(" %[^\n]", entry);
-    // while (getchar() != '\n'); //clear buffer
-    // return entry;
 }
