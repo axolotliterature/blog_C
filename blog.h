@@ -63,6 +63,16 @@ made changes to getEntry() to reflect those previous for getType() and etc.
 new error, title only strcpy until first space, entry doesnt strcpy anything
 
 poststart has not been cleared
+
+
+7/18
+
+bug list
+--postStart error, free(postStart) had been removed in the function revamp: added back in.
+--entry output error, entry was overwriting title. Fixed pointer in getEntry
+--entry and title errors, currently only saving up to first space. changed scanf to %[^\n]s to remedy these errors.
+
+
 */
 
 //is exit(num) used in proper context?
